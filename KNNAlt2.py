@@ -10,14 +10,14 @@ playlist_df = pd.read_csv('playlists_dataset.csv', sep=";", encoding = "ISO-8859
 
 # Andmete eeltöötlus
 playlist_df = playlist_df.dropna(how='any')
-#songs_df = songs_df.sample(100000)
 songs_df = songs_df.dropna(how='any')
 
 base_songs = songs_df.iloc[:, 0:17].values
 playlist_songs = playlist_df.iloc[:, 0:17].values
-X = playlist_songs[:, 7:17]
-Y = base_songs[:, 7:17]
+X = playlist_songs[:, [4, 5, 7, 8, 10, 11, 13, 14, 15, 16]]
+Y = base_songs[:, [4, 5, 7, 8, 10, 11, 13, 14, 15, 16]]
 
+# Laulude ja artistide nimed eraldi massiivi
 song_names = np.column_stack((base_songs[:, 3], base_songs[:, 1]))
 playlist_song_names = np.column_stack((playlist_songs[:, 3], playlist_songs[:, 1]))
 
@@ -40,6 +40,7 @@ songs = result[random_index].tolist()
 print("Recommending songs similar to ", end = ' ')
 print(playlist_song_names[random_index])
 
+# Väljastame soovitused artisti ja laulu nime kaudu
 for name, count in zip(song_names, enumerate(song_names)):
     for song in songs:
         if song == count[0]:
